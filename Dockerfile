@@ -1,7 +1,7 @@
 FROM debian:stable-slim
-LABEL   org.opencontainers.image.authors="Clément OUDOT" \
+LABEL   org.opencontainers.image.authors="jpartain89" \
         name="lemonldap-ng-nginx" \
-        version="v2.0"
+        version="v2.17.1"
 
 ENV SSODOMAIN=example.com \
     LOGLEVEL=info \
@@ -11,9 +11,9 @@ EXPOSE 80
 
 RUN echo "# Install LemonLDAP::NG source repo" && \
     apt-get -y update && \
-    apt-get -y install wget apt-transport-https gnupg dumb-init && \
-    wget -O - https://lemonldap-ng.org/_media/rpm-gpg-key-ow2 | apt-key add - && \
-    echo "deb https://lemonldap-ng.org/deb 2.0 main" >/etc/apt/sources.list.d/lemonldap-ng.list
+    apt-get -y install curl apt-transport-https gnupg dumb-init && \
+    curl https://lemonldap-ng.org/_media/rpm-gpg-key-ow2 | gpg --dearmor > /usr/share/keyrings/lemonldap-ng-archive-keyring.gpg \
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/lemonldap-ng-archive-keyring.gpg] https://lemonldap-ng.org/deb 2.0 main" > /etc/apt/sources.list.d/lemonldap-ng.list
 
 RUN echo "# Enable Debian backports" && \
     echo "deb http://deb.debian.org/debian bullseye-backports main" > /etc/apt/sources.list.d/backports.list
@@ -27,7 +27,11 @@ RUN apt-get -y update && \
     apt-get -y install libauthen-webauthn-perl && \
     echo "# Install some DB drivers" && \
     apt-get -y install libdbd-mysql-perl libdbd-pg-perl && \
-    echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+    echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
+    apt-get clean && \
+    apt-get autoclean && \
+    apt-get autoremove --purge -y && \
+    rm -rf /var/lib/apt/list/* | true
 
 COPY docker-entrypoint.sh /
 
