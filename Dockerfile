@@ -12,8 +12,8 @@ EXPOSE 80
 RUN echo "# Install LemonLDAP::NG source repo" && \
     apt-get -y update && \
     apt-get -y install curl apt-transport-https gnupg dumb-init && \
-    curl https://lemonldap-ng.org/_media/rpm-gpg-key-ow2 | gpg --dearmor > /usr/share/keyrings/lemonldap-ng-archive-keyring.gpg \
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/lemonldap-ng-archive-keyring.gpg] https://lemonldap-ng.org/deb 2.0 main" > /etc/apt/sources.list.d/lemonldap-ng.list
+    curl https://lemonldap-ng.org/_media/rpm-gpg-key-ow2 | gpg --dearmor > /etc/apt/trusted.gpg.d/lemonldap-ng-archive-keyring.gpg \
+    echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/lemonldap-ng-archive-keyring.gpg] https://lemonldap-ng.org/deb 2.0 main" > /etc/apt/sources.list.d/lemonldap-ng.list
 
 RUN echo "# Enable Debian backports" && \
     echo "deb http://deb.debian.org/debian bullseye-backports main" > /etc/apt/sources.list.d/backports.list
