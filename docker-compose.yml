@@ -15,3 +15,8 @@ services:
       - LOGLEVEL=debug
       - FASTCGI_LISTEN_PORT=9000
       - PROXY_RANGE=10.0.100.0/24
+    volumes:
+      - /docker/lemonldap/etc:/etc/lemonldap-ng
+      - /docker/lemonldap/conf:/var/lib/lemonldap-ng/conf
+      - /docker/lemonldap/sessions:/var/lib/lemonldap-ng/sessions
+      - /docker/lemonldap/psessions:/var/lib/lemonldap-ng/psessions
