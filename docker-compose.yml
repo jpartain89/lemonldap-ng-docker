@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  lemonldap:
+    image: jpartain89/lemonldap-ng:2.17.0
+    container_name: lemonldap-ng
+    ports:
+      - 7898:80
+      - 7897:9000
+    environment:
+      - SSODOMAIN=jpcdi.com
+      - PORTAL_HOSTNAME=portal.jpcdi.com
+      - MANAGER_HOSTNAME=manager.jpcdi.com
+      - HANDLER_HOSTNAME=handler.jpcdi.com
+      - LOGLEVEL=debug
+      - FASTCGI_LISTEN_PORT=9000
+      - PROXY_RANGE=10.0.100.0/24
